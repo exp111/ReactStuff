@@ -1,0 +1,42 @@
+body
+{
+  background-color: black !important;
+}
+
+.result
+{
+  color: white;
+  text-align: right;
+  font-size: xx-large;
+  height: 100px;
+  display: flex;
+  align-items: flex-end; /* Align vertically */
+  justify-content: flex-end; /* Align horizontally */
+}
+
+.button
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button > button
+{
+  height: 50px;
+  width: 50px;
+  font-size: 20px;
+  border: 0px;
+}
+
+.button > button.light-grey
+{
+  color:black;
+  background-color: white;
+}
+
+.button > button.orange
+{
+  color: white;
+  background-color: orange;
+}

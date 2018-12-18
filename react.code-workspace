@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "tutorial\\src"
+		},
+		{
+			"path": "calculator\\src"
 		}
 	],
 	"settings": {}
