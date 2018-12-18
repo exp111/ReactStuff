@@ -114,32 +114,16 @@ function checkForWinner(squares, length, needed)
 }
 
 class Board extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          squares: Array(Math.pow(this.props.length, 2)).fill(null),
-          xTurn: true,
-          won: false,
-        };
-    }
-
     renderSquare(i) {
+        if (this.props.handleClick)
+        {
       return <Square 
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
+        value={this.props.squares[i]}
+        onClick={() => this.props.handleClick(i)}
       />;
-    }
-
-    handleClick(i)
-    {
-        const squares = this.state.squares.slice();
-        if (squares[i] != null || this.state.won)
-            return;
-        squares[i] = this.state.xTurn ? 'X' : 'O';
-        this.setState({
-            squares: squares, 
-            xTurn: !this.state.xTurn,
-        });
+        }
+        return <Square 
+        value={this.props.squares[i]}/>
     }
   
     renderBoard(length)
@@ -159,19 +143,8 @@ class Board extends React.Component {
     }
 
     render() {
-        const winner = checkForWinner(this.state.squares, this.props.length, this.props.needed);
-        let status;
-        if (winner) {
-          status = 'Winner: ' + winner;
-          if (!this.state.won)
-            this.setState({won: true});
-        } else {
-          status = 'Next player: ' + (this.state.xTurn ? 'X' : 'O');
-        }
-  
       return (
         <div>
-          <div className="status">{status}</div>
           {this.renderBoard(this.props.length)}
         </div>
       );
@@ -182,17 +155,88 @@ class Board extends React.Component {
     constructor(props)
     {
         super(props);
+        this.state = {
+            history: [{squares: Array(Math.pow(this.props.length, 2)).fill(null),}],
+            xTurn: true,
+            won: false,
+          };
+    }
+
+    handleClick(i)
+    {
+        const history = this.state.history;
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
+        if (squares[i] != null || this.state.won)
+            return;
+        squares[i] = this.state.xTurn ? 'X' : 'O';
+        this.setState({
+            history: history.concat([{
+                squares: squares,
+              }]),
+            xTurn: !this.state.xTurn,
+        });
+    }
+
+    handleHistoryClick(i)
+    {
+        const history = this.state.history;
+        history.splice(i + 1);
+        this.setState({
+            history: history,
+            won: false,
+            xTurn: (i % 2 === 0)
+        })
+    }
+
+    renderHistory()
+    {
+        const history = this.state.history;
+        return history.map((step, move) => {
+            const desc = move ?
+              `Go to move ${move}` :
+              'Go to game start';
+            return (
+              <li key={move}>
+                <button onClick={() => this.handleHistoryClick(move)}>{desc}</button>
+                <Board 
+                length={this.props.length} 
+                needed={this.props.needed} 
+                squares={history[move].squares}/>
+              </li>
+            );
+          });
     }
 
     render() {
+        const history = this.state.history;
+        const current = history[history.length - 1];
+        const winner = checkForWinner(current.squares, this.props.length, this.props.needed);
+        
+        var status;
+        if (winner) 
+        {
+          status = 'Winner: ' + winner;
+          if (!this.state.won)
+          {
+            this.setState({won: true});
+          }
+        } else {
+          status = 'Next player: ' + (this.state.xTurn ? 'X' : 'O');
+        }
+
       return (
         <div className="game">
           <div className="game-board">
-            <Board length={this.props.length} needed={this.props.needed}/>
+            <Board 
+            length={this.props.length} 
+            needed={this.props.needed} 
+            squares={current.squares} 
+            handleClick={(i) => this.handleClick(i)}/>
           </div>
           <div className="game-info">
-            <div>{/* status */}</div>
-            <ol>{/* TODO */}</ol>
+            <div>{status}</div>
+            <ol>{this.renderHistory()}</ol>
           </div>
         </div>
       );
