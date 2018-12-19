@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.header, .footer
+{
+  height: 5%;
+  color: black;
+  text-align: center;
+  font-weight: bold;
+  width: 95%;
+}
+
+.header a, .footer a
+{
+    color: orange;
+    float: right;
+    text-shadow: 0.5px 0px 0.5px black;
+    cursor: pointer;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.footer
+{
+  position: absolute;
+  bottom: 0px;
+}
+
+.note
+{
+  height: 10%;
+  border-bottom: 1px solid rgba(169, 169, 169, 0.3);
+  font-size: 16px;
+  padding-bottom: 0.3em;
+  color: darkgray;
+}
+
+.note-header
+{
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 0.1em;
+}
+
+.note-date
+{
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.container
+{
+  margin-left: 10px;
+  margin-right: 10px;
+}
