@@ -15,21 +15,42 @@ code {
 
 .header, .footer
 {
-  height: 5%;
+  line-height: 3em;
+  height: 3em;
   color: black;
   text-align: center;
   font-weight: bold;
   width: 95%;
 }
 
-.header a, .footer a
+.header button, .footer button
 {
+    /* Hide the buttoney look */
+    background:none!important;
+    border:none;
+    padding:0!important;
+    font: inherit;
+
     color: orange;
-    float: right;
     text-shadow: 0.5px 0px 0.5px black;
     cursor: pointer;
     font-weight: normal;
     text-decoration: none;
+}
+
+.header button:focus, .footer button:focus
+{
+  outline: none !important;
+}
+
+.header .left, .footer .left
+{
+  float: left;
+}
+
+.header .right, .footer .right
+{
+  float: right;
 }
 
 .footer
@@ -45,6 +66,12 @@ code {
   font-size: 16px;
   padding-bottom: 0.3em;
   color: darkgray;
+  transition-duration: 0.25s;
+}
+
+.note:hover
+{
+  background-color: wheat;
 }
 
 .note-header
@@ -65,4 +92,10 @@ code {
 {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.note-list
+{
+  list-style-type:none;
+  padding-left: 0;
 }

@@ -2,16 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Header(props)
-{
-    return(
-    <div class="header">
-    Notizen 
-    {<a href="#" onClick={() => props.onClick()}>{props.editMode ? "Fertig" : "Bearbeiten"}</a>}
-    </div>
-    );
-}
-
 class Note
 {
     constructor()
@@ -26,31 +16,35 @@ class NoteContent extends React.Component
 {
     renderList()
     {
-        var noteList = [];
-        var notes = this.props.notes;
-        for (var i = 0; i < notes.length; i++)
-        {
-            var note = notes[i];
-            noteList.push(
-                <div class="note">
-                    <p class="note-header">{note.title}</p>
-                    <span class="note-date">{note.date.toLocaleDateString()}</span>{note.value}
-                </div>
+        const notes = this.props.notes;
+        return notes.map((note, i) => {
+            return (
+              <li className="note" key={i} onClick={() => this.props.onClick(i)}>
+                <p className="note-header">{note.title}</p>
+                <span className="note-date">{note.date.toLocaleDateString()}</span>{note.value}
+              </li>
             );
-        }
-        return noteList;
+          });
     }
 
-    rednerNote()
+    renderNote()
     {
-        return(<div>{this.props.value}</div>)
+        var note = this.props.notes[this.props.value];
+        if (note == null)
+            return(<div></div>);
+        return(
+        <div>
+            <p>{note.title}</p>
+            {note.value}
+        </div>
+        );
     }
 
     render()
     {
         if (this.props.value === -1)
         {
-            return(<div class="note-list">{this.renderList()}</div>);
+            return(<ul className="note-list">{this.renderList()}</ul>);
         }
         else
         {
@@ -80,19 +74,30 @@ class Notes extends React.Component
     {
         var notes = this.state.notes.slice();
         notes.push(new Note());
-        console.debug(notes);
-        this.setState({notes: notes});
+        this.setState({notes: notes, current: notes.length - 1});
+    }
+
+    showNote(i)
+    {
+        this.setState({current: i});
     }
 
     render() 
     {
         return(
-            <div class="container">
-            <Header editMode={this.state.editMode} onClick={() => this.toggleEditMode()}></Header>
+            <div className="container">
+                <div className="header">
+                {<button className="left" onClick={() => this.showNote(-1)}>{this.state.current !== -1 ? "<" : ""}</button>}
+                Notizen 
+                {<button className="right" onClick={() => this.toggleEditMode()}>{this.state.editMode ? "Fertig" : "Bearbeiten"}</button>}
+                </div>
 
-            <NoteContent value={this.state.current} notes={this.state.notes}></NoteContent>
+                <NoteContent value={this.state.current} notes={this.state.notes} onClick={(i) => this.showNote(i)}></NoteContent>
         
-            <div class="footer">{this.state.notes.length} Notizen<a href="#" onClick={() => this.addNote()}>+</a></div>
+                <div className="footer">
+                {this.state.notes.length} Notizen
+                <button className="right" onClick={() => this.addNote()}>+</button>
+                </div>
             </div>
         );
     }
